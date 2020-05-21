@@ -5,6 +5,7 @@ using Sample.web.Contracts.V1.Request;
 using Sample.web.Contracts.V1.Responses;
 using Sample.web.Domain;
 using Sample.web.Services;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Sample.web.Controllers.V1
@@ -53,7 +54,7 @@ namespace Sample.web.Controllers.V1
         {
             var brand = await _brandService.GetBrandByIdAsync(id);
 
-            if(brand == null)
+            if (brand == null)
                 return NotFound();
 
             brand.Name = request.Name;
@@ -63,7 +64,7 @@ namespace Sample.web.Controllers.V1
             if (updated)
                 return Ok(_mapper.Map<BrandResponse>(brand));
 
-            return BadRequest(new { error = "Failed to created"});
+            return BadRequest(new ErrorResponse { Errors = new List<ErrorModel> { new ErrorModel { Message = "Failed to Created" } } });
         }
 
         [HttpGet("{id}")]
