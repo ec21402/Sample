@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using Sample.Installers;
 using Sample.web.Filter;
 using Sample.web.Installers;
@@ -34,6 +35,11 @@ namespace Sample
                     {
                         option.RegisterValidatorsFromAssemblyContaining<Startup>();
                     });
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Sample API", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,6 +51,14 @@ namespace Sample
             }
 
             app.UseHttpsRedirection();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sample API V1");
+                c.RoutePrefix = string.Empty;
+            });
 
             app.UseRouting();
 
