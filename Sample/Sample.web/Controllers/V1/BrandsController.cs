@@ -25,6 +25,7 @@ namespace Sample.web.Controllers.V1
         [HttpPost()]
         public async Task<IActionResult> Create([FromBody] CreateBrandRequest request)
         {
+            var test = "1";
             var name = request.Name.Trim();
             var brand = new Brand
             {
